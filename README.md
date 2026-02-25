@@ -16,6 +16,6 @@ This microservice provides weather information for a given location. It utilizes
 ## Notes
 
 - This document is a work in progress and will be updated as the project progresses
-
+- 
 
 
