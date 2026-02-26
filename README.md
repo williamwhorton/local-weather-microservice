@@ -14,7 +14,11 @@ This microservice provides weather information. It utilizes the OpenWeatherMap A
 
 ## Environment Variables
 
+- `PORT` – _The port number on which the server will run (default: 3000)._
+- `NODE_ENV` – _The environment in which the application is running (e.g., development, production)._
 - `OPENWEATHERMAP_API_KEY` – _OpenWeatherMap API key for accessing weather data._
+- `OPENWEATHERMAP_API_BASE_URL` – _Base URL for the OpenWeatherMap One Call API._
+- `OPENWEATHERMAP_GEO_API_BASE_URL` – _Base URL for the OpenWeatherMap Geocoding API._
 
 ## Notes
 
