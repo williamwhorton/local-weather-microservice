@@ -6,7 +6,7 @@ import formatResponse from "../utils/formatResponse.js";
 const router = express.Router();
 
 router.get('/', async (req: any, res: { send: (arg0: any) => void; }) => {
-  const latLng = await findByIP("100.16.87.171")
+  const latLng = await findByIP(req.ip)
   const response = await getWeather({lat: latLng.lat, lon: latLng.lon})
   res.send(formatResponse(response.data));
 });
