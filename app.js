@@ -17,6 +17,7 @@ const app = express();
 // view engine setup
 app.set('views', path.join(_dirname, 'views'));
 app.set('view engine', 'hbs');
+app.enable('trust proxy');
 
 app.use(logger('dev'));
 app.use(express.json());
