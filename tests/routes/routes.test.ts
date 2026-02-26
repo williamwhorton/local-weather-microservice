@@ -10,7 +10,7 @@ jest.mock('../../services/getWeather.js');
 describe('Routes', () => {
   describe('GET /', () => {
     it('should redirect to /weather', async () => {
-      const response = request(app).get('/');
+      const [ response ] = await Promise.all( [ request( app ).get( '/' ) ] );
       // @ts-ignore
       expect(response.status).toBe(302);
     });
@@ -100,8 +100,7 @@ describe('Routes', () => {
 
       (geolocator.findByZip as jest.Mock).mockResolvedValue(mockLatLng);
       (getWeatherService.default as jest.Mock).mockResolvedValue({ data: mockWeatherData });
-
-      const response = request(app).get('/weather/uk/SW1A');
+      const [ response ] = await Promise.all( [ request( app ).get( '/weather/uk/SW1A' ) ] );
       // @ts-ignore
       expect(response.status).toBe(200);
       // @ts-ignore
@@ -110,9 +109,30 @@ describe('Routes', () => {
     });
   });
 
+  describe('Error handling', () => {
+    it('should return 500 when geolocator fails', async () => {
+      (geolocator.findByIP as jest.Mock).mockRejectedValue(new Error('Geolocator failed'));
+
+      // @ts-ignore
+      const response = await request(app).get('/weather').set("X-Forwarded-For", "1.2.3.4");
+
+      expect(response.status).toBe(500);
+    });
+
+    it('should return 500 when weather service fails', async () => {
+      (geolocator.findByIP as jest.Mock).mockResolvedValue({ lat: 0, lon: 0 });
+      (getWeatherService.default as jest.Mock).mockRejectedValue(new Error('Weather service failed'));
+
+      // @ts-ignore
+      const response = await request(app).get('/weather').set("X-Forwarded-For", "1.2.3.4");
+
+      expect(response.status).toBe(500);
+    });
+  });
+
   describe('404 handler', () => {
     it('should return 404 for unknown routes', async () => {
-      const response = request(app).get('/unknown-route');
+      const [ response ] = await Promise.all( [ request( app ).get( '/unknown-route' ) ] );
       // @ts-ignore
       expect(response.status).toBe(404);
     });
