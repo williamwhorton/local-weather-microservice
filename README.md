@@ -7,7 +7,7 @@ This microservice provides weather information. It utilizes the OpenWeatherMap A
 ## Routes
 
 - "GET /" – _Returns the home page._
-- "GET /weather/" – _Returns the current weather for a default IP address._
+- "GET /weather/" – _Returns the current weather for the client's externally-visible IP address._
 - "POST /weather/" – _Returns the current weather for the IP address provided in the request body._
 - "GET /weather/:country/:zip" – _Returns the current weather for the specified country and zip code._
 - "GET /users/" – _Returns a listing of users (placeholder)._
@@ -23,6 +23,6 @@ This microservice provides weather information. It utilizes the OpenWeatherMap A
 ## Notes
 
 - This document is a work in progress and will be updated as the project progresses
-- 
+- Currently hosted at https://local-weather-microservice.vercel.app/
 
 
