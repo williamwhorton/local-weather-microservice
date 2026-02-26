@@ -8,8 +8,9 @@ const router = express.Router();
 router.get('/', async (req: any, res: { send: (arg0: any) => void; }) => {
   const latLng = await findByIP(req.ip)
   console.log(latLng);
-  const response = await getWeather({lat: latLng.lat, lon: latLng.lon})
-  res.send(formatResponse(response.data));
+  res.send(latLng);
+  //const response = await getWeather({lat: latLng.lat, lon: latLng.lon})
+  //res.send(formatResponse(response.data));
 });
 
 router.post('/', async (req: { body: { ip: string; }; }, res: { send: (arg0: any) => void; }) => {
