@@ -5,12 +5,12 @@ import formatResponse from "../utils/formatResponse.js";
 
 const router = express.Router();
 
+router.enable('trust proxy');
+
 router.get('/', async (req: any, res: { send: (arg0: any) => void; }) => {
   const latLng = await findByIP(req.ip)
-  console.log(latLng);
-  res.send(latLng);
-  //const response = await getWeather({lat: latLng.lat, lon: latLng.lon})
-  //res.send(formatResponse(response.data));
+  const response = await getWeather({lat: latLng.lat, lon: latLng.lon})
+  res.send(formatResponse(response.data));
 });
 
 router.post('/', async (req: { body: { ip: string; }; }, res: { send: (arg0: any) => void; }) => {
