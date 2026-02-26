@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default async (latLng: { lat: any; lon: any; }) => {
-  const targetURL = process.env.OPENWEATHERMAP_API_BASE_URL + `lat=${latLng.lat}&lon=${latLng.lon}&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
+  const targetURL = process.env.OPENWEATHERMAP_API_BASE_URL + `lat=${latLng.lat}&lon=${latLng.lon}&units=imperial&exclude=minutely,hourly,daily,alerts&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
   const headers = {
     'Accept': 'application/json',
   }

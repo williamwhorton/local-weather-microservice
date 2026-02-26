@@ -25,6 +25,7 @@ app.use(express.static(path.join(_dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/weather', (await import('./routes/weather.js')).default);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

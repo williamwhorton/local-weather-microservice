@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-const findByZip = ({ zip, country }: { zip: string; country: string }) => {
-  const targetURL = process.env.GEOLOCATOR_URL + `zip?zip=${zip},${country}&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
-  return axios.get(targetURL);
+const findByZip = async ({ zip, country }: { zip: string; country: string }) => {
+  const targetURL = process.env.OPENWEATHERMAP_GEO_API_BASE_URL + `zip?zip=${zip},${country}&appid=${process.env.OPENWEATHERMAP_API_KEY}`;
+  return await axios.get(targetURL).then( ( res ) => {
+    return res.data;
+  });
 };
 
 const findByIP = async ( ip: string ) => {
