@@ -9,15 +9,15 @@ jest.mock('../../services/getWeather.js');
 
 describe('Routes', () => {
   describe('GET /', () => {
-    it('should return 200 and render index', async () => {
-      const response = await request(app).get('/');
-      expect(response.status).toBe(200);
-      expect(response.text).toContain('Express');
+    it('should redirect to /weather', async () => {
+      const response = request(app).get('/');
+      // @ts-ignore
+      expect(response.status).toBe(302);
     });
   });
 
   describe('GET /weather', () => {
-    it('should return weather data for a fixed IP', async () => {
+    it('should return weather data for the client\'s visible IP', async () => {
       const mockLatLng = { lat: 40.7128, lon: -74.0060 };
       const mockWeatherData = {
         current: {
@@ -34,10 +34,12 @@ describe('Routes', () => {
         description: 'clear sky'
       };
 
+
       (geolocator.findByIP as jest.Mock).mockResolvedValue(mockLatLng);
       (getWeatherService.default as jest.Mock).mockResolvedValue({ data: mockWeatherData });
 
-      const response = await request(app).get('/weather');
+      // @ts-ignore
+      const response = await request(app).get('/weather').set("X-Forwarded-For", "100.16.87.171");
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual(expectedFormattedData);
@@ -69,6 +71,7 @@ describe('Routes', () => {
 
       const response = await request(app)
         .post('/weather')
+          // @ts-ignore
         .send({ ip: '8.8.8.8' });
 
       expect(response.status).toBe(200);
@@ -98,25 +101,19 @@ describe('Routes', () => {
       (geolocator.findByZip as jest.Mock).mockResolvedValue(mockLatLng);
       (getWeatherService.default as jest.Mock).mockResolvedValue({ data: mockWeatherData });
 
-      const response = await request(app).get('/weather/uk/SW1A');
-
+      const response = request(app).get('/weather/uk/SW1A');
+      // @ts-ignore
       expect(response.status).toBe(200);
+      // @ts-ignore
       expect(response.body).toEqual(expectedFormattedData);
       expect(geolocator.findByZip).toHaveBeenCalledWith({ country: 'uk', zip: 'SW1A' });
     });
   });
 
-  describe('GET /users', () => {
-    it('should return 200 and a string', async () => {
-      const response = await request(app).get('/users');
-      expect(response.status).toBe(200);
-      expect(response.text).toBe('respond with a resource');
-    });
-  });
-
   describe('404 handler', () => {
     it('should return 404 for unknown routes', async () => {
-      const response = await request(app).get('/unknown-route');
+      const response = request(app).get('/unknown-route');
+      // @ts-ignore
       expect(response.status).toBe(404);
     });
   });

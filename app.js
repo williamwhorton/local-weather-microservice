@@ -7,7 +7,6 @@ import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
 import weatherRouter from './routes/weather.js';
-import usersRouter from './routes/users.js';
 
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
@@ -26,7 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(_dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/weather', weatherRouter);
 
 // catch 404 and forward to error handler
